@@ -21,7 +21,7 @@ module Mastodon
     end
 
     def suffix
-      "+glitch#{ENV.fetch('MASTODON_VERSION_SUFFIX', '')}"
+      "+glitch-snoot#{ENV.fetch('MASTODON_VERSION_SUFFIX', '')}"
     end
 
     def to_a
@@ -33,7 +33,7 @@ module Mastodon
     end
 
     def repository
-      ENV.fetch('GITHUB_REPOSITORY', 'glitch-soc/mastodon')
+      ENV.fetch('GITHUB_REPOSITORY', 'vivlim/glitch-soc-snoottube')
     end
 
     def source_base_url
