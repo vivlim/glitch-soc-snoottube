@@ -1,0 +1,27 @@
+{
+  "nodes": {
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1667770669,
+        "narHash": "sha256-FsfqP5utv3EKyQLFrceea6mpXtEWlxzNOMf83vOocTo=",
+        "owner": "vivlim",
+        "repo": "nixpkgs",
+        "rev": "a502ee099a27f7239474abc111c9e60ff9902120",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vivlim",
+        "ref": "mastodon-fixes-on-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
