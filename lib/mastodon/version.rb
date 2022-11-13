@@ -50,7 +50,7 @@ module Mastodon
     end
 
     def repository
-      source_configuration[:repository]
+      ENV.fetch('GITHUB_REPOSITORY', 'vivlim/glitch-soc-snoottube')
     end
 
     def source_base_url
