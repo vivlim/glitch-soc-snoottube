@@ -22,5 +22,6 @@ if Rake::Task.task_defined?('assets:precompile')
   Rake::Task['assets:precompile'].enhance do
     Webpacker.manifest.refresh
     Rake::Task['assets:generate_static_pages'].invoke
+    Rake::Task['branding:generate'].invoke
   end
 end
