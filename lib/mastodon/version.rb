@@ -25,7 +25,7 @@ module Mastodon
     end
 
     def build_metadata
-      ['glitch', ENV.fetch('MASTODON_VERSION_METADATA', nil)].compact_blank.join('.')
+      ['glitch-snoot', ENV.fetch('MASTODON_VERSION_METADATA', nil)].compact_blank.join('.')
     end
 
     def to_a
@@ -44,7 +44,7 @@ module Mastodon
     end
 
     def repository
-      ENV.fetch('GITHUB_REPOSITORY', 'glitch-soc/mastodon')
+      ENV.fetch('GITHUB_REPOSITORY', 'vivlim/glitch-soc-snoottube')
     end
 
     def source_base_url
