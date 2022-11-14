@@ -29,6 +29,7 @@ module Admin
 
       @form = Form::DomainBlockBatch.new
       @domain_blocks = @data.take(ROWS_PROCESSING_LIMIT).filter_map do |row|
+        Rails.logger.info("Adding domain block #{row['domain']}")
         domain = row['#domain'].strip
         next if DomainBlock.rule_for(domain).present?
 
