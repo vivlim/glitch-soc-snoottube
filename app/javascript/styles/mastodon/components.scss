@@ -1753,13 +1753,13 @@ a.account__display-name {
 
 .no-reduce-motion .icon-button.star-icon {
   &.activate {
-    & > .fa-floppy-disk {
+    & > .fa-star {
       animation: spring-rotate-in 1s linear;
     }
   }
 
   &.deactivate {
-    & > .fa-floppy-disk {
+    & > .fa-star {
       animation: spring-rotate-out 1s linear;
     }
   }
