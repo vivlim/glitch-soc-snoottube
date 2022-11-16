@@ -1,33 +1,22 @@
 // Dependent colors
 $black: #000000;
-$white: #ffffff;
 
-$classic-base-color: #69e85c; // dark byzantium
-$classic-primary-color: #45503b;  // rifle green
-$classic-secondary-color: #e6ccbe; // champagne pink
-$classic-highlight-color: #c8cc92; // sage
-
-// Differences
-$success-green: lighten(#3c754d, 8%);
-
-$base-overlay-background: $white !default;
-$valid-value-color: $success-green !default;
+$classic-base-color: #354f52;
+$classic-primary-color: #cad2c5;
+$classic-secondary-color: #84a98c;
+$classic-highlight-color: #52796f;
 
 $ui-base-color: $classic-base-color !default;
-$ui-base-lighter-color: #b9e28c; // yellow green crayola
-$ui-primary-color: #e3d3e4; // languid lavender
+$ui-primary-color: $classic-primary-color !default;
 $ui-secondary-color: $classic-secondary-color !default;
 $ui-highlight-color: $classic-highlight-color !default;
 
-$primary-text-color: $black !default;
-$darker-text-color: $classic-base-color !default;
-$highlight-text-color: darken($ui-highlight-color, 8%) !default;
-$dark-text-color: #444b5d;
-$action-button-color: #c8cc92; // sage
+$darker-text-color: lighten($ui-primary-color, 20%) !default;
+$dark-text-color: lighten($ui-primary-color, 12%) !default;
+$secondary-text-color: lighten($ui-secondary-color, 6%) !default;
+$highlight-text-color: lighten($ui-highlight-color, 10%) !default;
+$action-button-color: lighten($ui-base-color, 50%);
 
 $inverted-text-color: $black !default;
-$lighter-text-color: $classic-base-color !default;
-$light-text-color: #444b5d;
-
-// Newly added colors
-$account-background-color: $white !default;
+$lighter-text-color: darken($ui-base-color,6%) !default;
+$light-text-color: darken($ui-primary-color, 40%) !default;
