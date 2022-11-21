@@ -274,7 +274,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
         next if unsupported_media_type?(media_attachment_parser.file_content_type) || skip_download? || 
 
         if !(followed_by_local_accounts? || requested_through_relay?) then
-          Rails.logger.info "Skipping downloading media for post that wasn't boosted by a local account or posted by an account followed by a local account"
+          Rails.logger.info "Skipping downloading media for post that wasn't boosted by a local account or posted by an account followed by a local account\n#{object.to_yaml}"
           media_attachment.save # save the metadata
           next
         end
