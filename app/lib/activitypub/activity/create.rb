@@ -274,13 +274,15 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
         next if unsupported_media_type?(media_attachment_parser.file_content_type) || skip_download? || 
 
         if !(followed_by_local_accounts? || requested_through_relay?) then
-          Rails.logger.info "Skipping downloading media for post that wasn't boosted by a local account or posted by an account followed by a local account\n#{@object.to_yaml}"
+          Rails.logger.info "vvtrace: Skipping downloading media for post that wasn't boosted by a local account or posted by an account followed by a local account\nobject:\n#{@object.to_yaml}\noptions:\n#{@options.to_yaml}"
           media_attachment.save # save the metadata
           next
         end
 
         media_attachment.download_file!
         media_attachment.download_thumbnail!
+
+        Rails.logger.info "vvtrace: Downloaded media for post that wasn't boosted by a local account or posted by an account followed by a local account\n#{@object.to_yaml}"
         media_attachment.save
       rescue Mastodon::UnexpectedResponseError, HTTP::TimeoutError, HTTP::ConnectionError, OpenSSL::SSL::SSLError
         RedownloadMediaWorker.perform_in(rand(30..600).seconds, media_attachment.id)
