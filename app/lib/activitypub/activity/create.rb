@@ -271,7 +271,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
         media_attachments << media_attachment
 
-        next if unsupported_media_type?(media_attachment_parser.file_content_type) || skip_download?
+        next if unsupported_media_type?(media_attachment_parser.file_content_type) || skip_download? || !followed_by_local_accounts?
 
         media_attachment.download_file!
         media_attachment.download_thumbnail!
