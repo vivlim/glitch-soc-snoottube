@@ -36,7 +36,7 @@ export default class AttachmentList extends ImmutablePureComponent {
                 <a href={displayUrl} target='_blank' rel='noopener noreferrer'>
                   {compact && <Icon id='link' />}
                   {compact && ' ' }
-                  {description ?? displayUrl ? filename(displayUrl) : <FormattedMessage id='attachments_list.unprocessed' defaultMessage='(unprocessed)' />}
+                  {description ? description : displayUrl ? filename(displayUrl) : <FormattedMessage id='attachments_list.unprocessed' defaultMessage='(unprocessed)' />}
                 </a>
               </li>
             );
