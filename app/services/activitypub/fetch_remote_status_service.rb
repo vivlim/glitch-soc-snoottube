@@ -40,7 +40,14 @@ class ActivityPub::FetchRemoteStatusService < BaseService
     # activity as an update rather than create
     activity_json['type'] = 'Update' if equals_or_includes_any?(activity_json['type'], %w(Create)) && Status.where(uri: object_uri, account_id: actor.id).exists?
 
-    ActivityPub::Activity.factory(activity_json, actor).perform
+
+    s = ActivityPub::Activity.factory(activity_json, actor).perform
+    s.associated_logs.create(label: "fetch_remote_status_service.call", data: {
+      'activity_json' => activity_json,
+      'json' => @json,
+      'actor' => @actor
+    }.to_json).save!
+    s
   end
 
   private

@@ -32,6 +32,12 @@ class REST::StatusSerializer < ActiveModel::Serializer
   has_one :preview_card, key: :card, serializer: REST::PreviewCardSerializer
   has_one :preloadable_poll, key: :poll, serializer: REST::PollSerializer
 
+  has_many :associated_logs, if: :can_see_associated_logs
+
+  def can_see_associated_logs
+    current_user? && current_user.role.name == "Owner"
+  end
+
   def id
     object.id.to_s
   end
@@ -182,5 +188,9 @@ class REST::StatusSerializer < ActiveModel::Serializer
     def url
       tag_url(object)
     end
+  end
+
+  class AssociatedLogSerializer < ActiveModel::Serializer
+    attributes :id, :status_id, :account_id, :created_at, :label, :data
   end
 end

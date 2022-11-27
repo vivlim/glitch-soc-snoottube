@@ -85,6 +85,10 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       attach_tags(@status)
     end
 
+    @status.associated_logs.create(label: "activity.create.process_status", data: {
+      'status' => @status,
+    }.to_json).save!
+
     resolve_thread(@status)
     fetch_replies(@status)
     distribute
@@ -340,9 +344,19 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
   def fetch_replies(status)
     collection = @object['replies']
+
+    status.associated_logs.create(label: "activity.create.fetch_replies.1collection", data: {
+      'collection' => collection,
+    }.to_json).save!
+
     return if collection.nil?
 
     replies = ActivityPub::FetchRepliesService.new.call(status, collection, false)
+
+    status.associated_logs.create(label: "activity.create.fetch_replies.2replies", data: {
+      'replies' => replies,
+    }.to_json).save!
+
     return unless replies.nil?
 
     uri = value_or_id(collection)

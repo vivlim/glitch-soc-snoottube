@@ -640,6 +640,7 @@ class Status extends ImmutablePureComponent {
                   showMedia={this.state.showMedia}
                   onToggleMediaVisibility={this.handleToggleMediaVisibility}
                   pictureInPicture={pictureInPicture}
+                  associatedLogCollapsed={this.state.associatedLogCollapsed}
                 />
 
                 <ActionBar

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_04_133904) do
+ActiveRecord::Schema.define(version: 2022_11_27_072117) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -262,6 +262,17 @@ ActiveRecord::Schema.define(version: 2022_11_04_133904) do
     t.index ["account_warning_id"], name: "index_appeals_on_account_warning_id", unique: true
     t.index ["approved_by_account_id"], name: "index_appeals_on_approved_by_account_id", where: "(approved_by_account_id IS NOT NULL)"
     t.index ["rejected_by_account_id"], name: "index_appeals_on_rejected_by_account_id", where: "(rejected_by_account_id IS NOT NULL)"
+  end
+
+  create_table "associated_logs", force: :cascade do |t|
+    t.bigint "status_id"
+    t.bigint "account_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "label", null: false
+    t.json "data"
+    t.index ["account_id"], name: "index_associated_logs_on_account_id"
+    t.index ["status_id"], name: "index_associated_logs_on_status_id"
   end
 
   create_table "backups", force: :cascade do |t|
@@ -1143,6 +1154,8 @@ ActiveRecord::Schema.define(version: 2022_11_04_133904) do
   add_foreign_key "appeals", "accounts", column: "approved_by_account_id", on_delete: :nullify
   add_foreign_key "appeals", "accounts", column: "rejected_by_account_id", on_delete: :nullify
   add_foreign_key "appeals", "accounts", on_delete: :cascade
+  add_foreign_key "associated_logs", "accounts", on_delete: :cascade
+  add_foreign_key "associated_logs", "statuses", on_delete: :cascade
   add_foreign_key "backups", "users", on_delete: :nullify
   add_foreign_key "blocks", "accounts", column: "target_account_id", name: "fk_9571bfabc1", on_delete: :cascade
   add_foreign_key "blocks", "accounts", name: "fk_4269e03e65", on_delete: :cascade

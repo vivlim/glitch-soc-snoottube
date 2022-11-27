@@ -1,12 +1,13 @@
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import Permalink from './permalink';
 import classnames from 'classnames';
 import Icon from 'flavours/glitch/components/icon';
 import { autoPlayGif } from 'flavours/glitch/initial_state';
 import { decode as decodeIDNA } from 'flavours/glitch/utils/idna';
+import ReactJson from 'react-json-view';
 
 const textMatchesTarget = (text, origin, host) => {
   return (text === origin || text === host
@@ -62,7 +63,8 @@ const isLinkMisleading = (link) => {
   return !(textMatchesTarget(text, origin, host) || textMatchesTarget(text.toLowerCase(), origin, host));
 };
 
-export default class StatusContent extends React.PureComponent {
+export default @injectIntl
+class StatusContent extends React.PureComponent {
 
   static propTypes = {
     status: ImmutablePropTypes.map.isRequired,
@@ -86,6 +88,7 @@ export default class StatusContent extends React.PureComponent {
 
   state = {
     hidden: true,
+    associatedLogCollapsed: true,
   };
 
   _updateStatusLinks () {
@@ -253,6 +256,10 @@ export default class StatusContent extends React.PureComponent {
     this.contentsNode = c;
   }
 
+  handleShowAssociatedLogClicked = (c) => {
+    this.setState({ associatedLogCollapsed: false });
+  };
+
   render () {
     const {
       status,
@@ -274,6 +281,34 @@ export default class StatusContent extends React.PureComponent {
       'status__content--with-action': parseClick && !disabled,
       'status__content--with-spoiler': status.get('spoiler_text').length > 0,
     });
+
+    let associatedLogWidget = <span></span>;
+    let associated_logs = status.get('associated_logs');
+    if (associated_logs !== undefined && associated_logs.count() > 0){
+      if (!this.state.associatedLogCollapsed){
+        let rows = associated_logs.map(log => {
+          let created_at = this.props.intl.formatDate(log.get('created_at'), { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' });
+          try {
+            let data = JSON.parse(log.get('data'));
+            let logKey = `${log.get('id')}`;
+            return (
+              <li key={logKey}>
+                <div>{log.get('label')} @ {created_at}</div>
+                <ReactJson src={data} theme="monokai" enableEdit="false" collapsed="true" />
+              </li>
+            )
+          }
+          catch {
+            return <div>exception</div>;
+          }
+        });
+        associatedLogWidget = <div className="attachment-list"><ul className="attachment-list__list">{rows}</ul></div>;
+      } else {
+        associatedLogWidget = <button className='link-button' onClick={this.handleShowAssociatedLogClicked}>
+          🔬 {associated_logs.count()}
+        </button>;
+      }
+    }
 
     if (status.get('spoiler_text').length > 0) {
       let mentionsPlaceholder = '';
@@ -354,6 +389,7 @@ export default class StatusContent extends React.PureComponent {
           </div>
 
           {extraMedia}
+          {associatedLogWidget}
 
         </div>
       );
@@ -377,6 +413,7 @@ export default class StatusContent extends React.PureComponent {
           />
           {media}
           {extraMedia}
+          {associatedLogWidget}
         </div>
       );
     } else {
@@ -397,6 +434,7 @@ export default class StatusContent extends React.PureComponent {
           />
           {media}
           {extraMedia}
+          {associatedLogWidget}
         </div>
       );
     }

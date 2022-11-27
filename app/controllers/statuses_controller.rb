@@ -23,6 +23,14 @@ class StatusesController < ApplicationController
 
   def show
     respond_to do |format|
+      @status.associated_logs.create(label: "statuses_controller.show", data: {
+        'public_fetch_mode' => public_fetch_mode?,
+        'distributable' => @status.distributable?,
+        'current_account_username' => current_account.username,
+        'current_account_domain' => current_account.domain,
+        'current_account_url' => current_account.url,
+      }.to_json).save!
+
       format.html do
         expires_in 10.seconds, public: true if current_account.nil?
       end

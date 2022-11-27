@@ -35,6 +35,7 @@ class DetailedStatus extends ImmutablePureComponent {
     onOpenVideo: PropTypes.func.isRequired,
     onToggleHidden: PropTypes.func,
     expanded: PropTypes.bool,
+    associatedLogCollapsed: PropTypes.bool,
     measureHeight: PropTypes.bool,
     onHeightChange: PropTypes.func,
     domain: PropTypes.string.isRequired,
@@ -304,6 +305,7 @@ class DetailedStatus extends ImmutablePureComponent {
             mediaIcons={contentMediaIcons}
             expanded={expanded}
             collapsed={false}
+            associatedLogCollapsed={this.props.associatedLogCollapsed}
             onExpandedToggle={onToggleHidden}
             parseClick={this.parseClick}
             onUpdate={this.handleChildUpdate}
