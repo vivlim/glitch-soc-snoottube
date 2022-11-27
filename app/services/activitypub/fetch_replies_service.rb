@@ -45,6 +45,8 @@ class ActivityPub::FetchRepliesService < BaseService
     # amplification attacks.
 
     # Also limit to 5 fetched replies to limit potential for DoS.
-    @items.map { |item| value_or_id(item) }.reject { |uri| non_matching_uri_hosts?(@account.uri, uri) }.take(5)
+    #@items.map { |item| value_or_id(item) }.reject { |uri| non_matching_uri_hosts?(@account.uri, uri) }.take(5)
+
+    @items.take(15) # Modification: disregard the above reasons and fetch more replies, unconditionally
   end
 end
