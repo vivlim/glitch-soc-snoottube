@@ -26,7 +26,7 @@ class StatusesController < ApplicationController
       @status.associated_logs.create(label: "statuses_controller.show", data: {
         'public_fetch_mode' => public_fetch_mode?,
         'distributable' => @status.distributable?,
-        'current_account_url' => current_account.url,
+        'current_account_url' => current_account.nil? ? nil : current_account.url,
         'caller' => caller
       }.to_json).save!
 
