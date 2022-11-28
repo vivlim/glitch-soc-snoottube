@@ -14,7 +14,8 @@ class ThreadResolveWorker
     child_status.associated_logs.create(label: "thread_resolve_worker.perform", data: {
       'child_status' => child_status,
       'parent_url' => parent_url,
-      'parent_status' => parent_status
+      'parent_status' => parent_status,
+      'caller' => caller
     }.to_json).save!
 
     return if parent_status.nil?

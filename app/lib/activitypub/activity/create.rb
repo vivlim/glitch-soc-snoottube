@@ -87,6 +87,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
     @status.associated_logs.create(label: "activity.create.process_status", data: {
       'status' => @status,
+      'caller' => caller
     }.to_json).save!
 
     resolve_thread(@status)
@@ -347,6 +348,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
     status.associated_logs.create(label: "activity.create.fetch_replies.1collection", data: {
       'collection' => collection,
+      'caller' => caller
     }.to_json).save!
 
     return if collection.nil?

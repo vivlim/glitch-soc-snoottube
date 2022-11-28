@@ -29,6 +29,7 @@ class StatusesController < ApplicationController
         'current_account_username' => current_account.username,
         'current_account_domain' => current_account.domain,
         'current_account_url' => current_account.url,
+        'caller' => caller
       }.to_json).save!
 
       format.html do

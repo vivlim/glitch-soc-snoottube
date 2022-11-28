@@ -14,7 +14,14 @@ class StatusFinder
 
     case recognized_params[:controller]
     when 'statuses'
-      Status.find(recognized_params[:id])
+      status = Status.find(recognized_params[:id])
+
+      status.associated_logs.create(label: "status_finder", data: {
+        'recognized_params' => recognized_params,
+        'url' => url,
+        'caller' => caller
+      }.to_json).save!
+      status
     else
       raise ActiveRecord::RecordNotFound
     end

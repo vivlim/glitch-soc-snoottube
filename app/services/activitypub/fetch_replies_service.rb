@@ -12,7 +12,8 @@ class ActivityPub::FetchRepliesService < BaseService
 
     parent_status.associated_logs.create(label: "fetch_replies_service.call", data: {
       'items' => @items,
-      'filtered_replies' => filtered_replies
+      'filtered_replies' => filtered_replies,
+      'caller' => caller
     }.to_json).save!
 
     FetchReplyWorker.push_bulk(filtered_replies)

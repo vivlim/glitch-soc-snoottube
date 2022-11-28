@@ -10,6 +10,7 @@ class ActivityPub::DistributionWorker < ActivityPub::RawDistributionWorker
     @status.associated_logs.create(label: "distribution_worker", data: {
       'target_inboxes' => inboxes,
       'status' => @status,
+      'caller' => caller
     }.to_json).save!
     distribute!
   rescue ActiveRecord::RecordNotFound

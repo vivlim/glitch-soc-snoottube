@@ -45,7 +45,8 @@ class ActivityPub::FetchRemoteStatusService < BaseService
     s.associated_logs.create(label: "fetch_remote_status_service.call", data: {
       'activity_json' => activity_json,
       'json' => @json,
-      'actor' => @actor
+      'actor' => @actor,
+      'caller' => caller,
     }.to_json).save!
     s
   end
