@@ -38,7 +38,7 @@ class SearchService < BaseService
 
   def perform_statuses_search!
     statuses_index = StatusesIndex.filter(term: { searchable_by: @account.id })
-    if SEARCH_ALL_VISIBLE_TOOTS
+    if SEARCH_ALL_PUBLIC_STATUSES
       statuses_index = statuses_index.filter.or(term: { searchable_by_anyone: true })
     end
     definition = parsed_query.apply(statuses_index)
