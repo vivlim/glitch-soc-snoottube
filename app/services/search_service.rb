@@ -2,7 +2,7 @@
 
 class SearchService < BaseService
 
-  SEARCH_ALL_VISIBLE_TOOTS = ENV['SEARCH_ALL_VISIBLE_TOOTS'] == 'true'
+  SEARCH_ALL_VISIBLE_STATUSES = ENV['SEARCH_ALL_VISIBLE_STATUSES'] == 'true'
 
   def call(query, account, limit, options = {})
     @query   = query&.strip
