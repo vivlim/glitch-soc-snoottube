@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SearchService < BaseService
-  SEARCH_ALL_VISIBLE_STATUSES = ENV['SEARCH_ALL_VISIBLE_STATUSES'] == 'true'
+  SEARCH_ALL_PUBLIC_STATUSES = ENV['SEARCH_ALL_PUBLIC_STATUSES'] == 'true'
 
   def call(query, account, limit, options = {})
     @query   = query&.strip
