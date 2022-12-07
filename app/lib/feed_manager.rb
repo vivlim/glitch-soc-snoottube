@@ -43,14 +43,13 @@ class FeedManager
       filter_from_home?(status, receiver.id, build_crutches(receiver.id, [status]))
     when :list
       filter_from_list?(status, receiver) || filter_from_home?(status, receiver.account_id, build_crutches(receiver.account_id, [status]))
+      filter_from_home?(status, receiver.id, build_crutches(receiver.id, [status]), :list)
     when :mentions
       filter_from_mentions?(status, receiver.id)
     when :direct
       filter_from_direct?(status, receiver.id)
     when :tags
       filter_from_tags?(status, receiver.id, build_crutches(receiver.id, [status]))
-    when :list
-      filter_from_home?(status, receiver.id, build_crutches(receiver.id, [status]), :list)
     else
       false
     end
