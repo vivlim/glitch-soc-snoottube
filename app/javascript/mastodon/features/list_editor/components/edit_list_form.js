@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { changeListEditorTitle, changeListEditorIsExclusive, submitListEditor } from '../../../actions/lists';
 import IconButton from '../../../components/icon_button';
-import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
+import { defineMessages, injectIntl } from 'react-intl';
 import Toggle from 'react-toggle';
 
 const messages = defineMessages({
   title: { id: 'lists.edit.submit', defaultMessage: 'Change title' },
+  exclusive: { id: 'lists.is-exclusive', defaultMessage: 'Exclusive?' },
 });
 
 const mapStateToProps = state => ({
@@ -53,7 +54,7 @@ class ListForm extends React.PureComponent {
   }
 
   render () {
-    const { value, disabled, intl, isExclusive, hello } = this.props;
+    const { value, disabled, intl, isExclusive } = this.props;
 
     const title = intl.formatMessage(messages.title);
 
@@ -67,7 +68,7 @@ class ListForm extends React.PureComponent {
 
         <label htmlFor='is-exclusive-checkbox'>
           <Toggle className='is-exclusive-checkbox' defaultChecked={isExclusive} onChange={this.handleToggle}/>
-          <FormattedMessage id='lists.is-exclusive' defaultMessage='Exclusive?' />
+          {intl.formatMessage(messages.exclusive)}
         </label>
 
         <IconButton
