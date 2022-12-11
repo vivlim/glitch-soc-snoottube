@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class SearchService < BaseService
-  SEARCH_ALL_PUBLIC_STATUSES = ENV['SEARCH_ALL_PUBLIC_STATUSES'] == 'true'
-
   def call(query, account, limit, options = {})
     @query   = query&.strip
     @account = account
@@ -38,8 +36,11 @@ class SearchService < BaseService
 
   def perform_statuses_search!
     statuses_index = StatusesIndex.filter(term: { searchable_by: @account.id })
-    if SEARCH_ALL_PUBLIC_STATUSES
-      statuses_index = statuses_index.filter.or(term: { searchable_by_anyone: true })
+    case Rails.configuration.x.search_scope
+    when :public
+      statuses_index = statuses_index.filter.or(term: { visibility: 'public' })
+    when :public_or_unlisted
+      statuses_index = statuses_index.filter.or(term: { visibility: ['public', 'unlisted'] })
     end
     definition = parsed_query.apply(statuses_index)
 

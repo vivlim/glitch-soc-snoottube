@@ -58,13 +58,21 @@ class Importer::StatusesIndexImporter < Importer::BaseImporter
   end
 
   def scopes
-    [
+    classic_scopes = [
       local_statuses_scope,
       local_mentions_scope,
       local_favourites_scope,
       local_votes_scope,
       local_bookmarks_scope,
     ]
+    case Rails.configuration.x.search_scope
+    when :public
+      classic_scopes + [public_scope]
+    when :public_or_unlisted
+      classic_scopes + [public_or_unlisted_scope]
+    else
+      classic_scopes
+    end
   end
 
   def local_mentions_scope
@@ -85,5 +93,15 @@ class Importer::StatusesIndexImporter < Importer::BaseImporter
 
   def local_statuses_scope
     Status.local.select('"statuses"."id", COALESCE("statuses"."reblog_of_id", "statuses"."id") AS status_id')
+  end
+
+  # The `id` field in the above queries isn't used anywhere, so we leave it out of these.
+
+  def public_scope
+    Status.with_public_visibility.select('"statuses"."id" AS status_id')
+  end
+
+  def public_or_unlisted_scope
+    Status.with_public_or_unlisted_visibility.select('"statuses"."id" AS status_id')
   end
 end

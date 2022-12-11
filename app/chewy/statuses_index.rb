@@ -65,12 +65,15 @@ class StatusesIndex < Chewy::Index
   root date_detection: false do
     field :id, type: 'long'
     field :account_id, type: 'long'
+    field :created_at, type: 'date'
+    field :visibility, type: 'keyword'
+    field :from, type: 'keyword', value: ->(status) { status.account.domain ? [status.account.acct] : [status.account.acct, "#{status.account.username}@#{Rails.configuration.x.local_domain}"] }
+    field :domain, value: ->(status) { status.account.domain or Rails.configuration.x.local_domain }
 
     field :text, type: 'text', value: ->(status) { status.searchable_text } do
       field :stemmed, type: 'text', analyzer: 'content'
     end
 
     field :searchable_by, type: 'long', value: ->(status, crutches) { status.searchable_by(crutches) }
-    field :searchable_by_anyone, type: 'boolean', value: ->(status) { status.public_visibility? }
   end
 end
