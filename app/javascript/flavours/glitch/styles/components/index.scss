@@ -15,7 +15,7 @@
   display: block;
   font-size: 15px;
   line-height: 20px;
-  color: $ui-highlight-color;
+  color: $highlight-text-color;
   border: 0;
   background: transparent;
   padding: 0;
@@ -140,6 +140,30 @@
 
     &:disabled {
       opacity: 0.5;
+    }
+
+    &.button--confirmation {
+      color: $valid-value-color;
+      border-color: $valid-value-color;
+
+      &:active,
+      &:focus,
+      &:hover {
+        background: $valid-value-color;
+        color: $primary-text-color;
+      }
+    }
+
+    &.button--destructive {
+      color: $error-value-color;
+      border-color: $error-value-color;
+
+      &:active,
+      &:focus,
+      &:hover {
+        background: $error-value-color;
+        color: $primary-text-color;
+      }
     }
   }
 
@@ -1051,12 +1075,16 @@
     margin-top: 10px;
 
     h4 {
+      border-bottom: 1px solid lighten($ui-base-color, 8%);
+      padding: 10px;
       font-size: 12px;
       text-transform: uppercase;
-      color: $darker-text-color;
-      padding: 10px;
       font-weight: 500;
-      border-bottom: 1px solid lighten($ui-base-color, 8%);
+
+      a {
+        color: $darker-text-color;
+        text-decoration: none;
+      }
     }
 
     @media screen and (max-height: 810px) {
