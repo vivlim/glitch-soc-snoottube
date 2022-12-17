@@ -9,6 +9,7 @@ import {
   LIST_EDITOR_RESET,
   LIST_EDITOR_SETUP,
   LIST_EDITOR_TITLE_CHANGE,
+  LIST_EDITOR_IS_EXCLUSIVE_CHANGE,
   LIST_ACCOUNTS_FETCH_REQUEST,
   LIST_ACCOUNTS_FETCH_SUCCESS,
   LIST_ACCOUNTS_FETCH_FAIL,
@@ -24,6 +25,7 @@ const initialState = ImmutableMap({
   isSubmitting: false,
   isChanged: false,
   title: '',
+  isExclusive: false,
 
   accounts: ImmutableMap({
     items: ImmutableList(),
@@ -45,11 +47,17 @@ export default function listEditorReducer(state = initialState, action) {
     return state.withMutations(map => {
       map.set('listId', action.list.get('id'));
       map.set('title', action.list.get('title'));
+      map.set('isExclusive', action.list.get('is_exclusive'));
       map.set('isSubmitting', false);
     });
   case LIST_EDITOR_TITLE_CHANGE:
     return state.withMutations(map => {
       map.set('title', action.value);
+      map.set('isChanged', true);
+    });
+  case LIST_EDITOR_IS_EXCLUSIVE_CHANGE:
+    return state.withMutations(map => {
+      map.set('isExclusive', action.value);
       map.set('isChanged', true);
     });
   case LIST_CREATE_REQUEST:
