@@ -50,9 +50,9 @@ class ActivityPub::ProcessStatusUpdateService < BaseService
 
       reset_preview_card!
       broadcast_updates!
-
-      StatusesIndex.import! @status
     end
+
+    StatusesIndex.import! @status
 
     forward_activity! if significant_changes? && @status_parser.edited_at > last_edit_date
   end
