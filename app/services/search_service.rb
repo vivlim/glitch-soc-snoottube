@@ -40,7 +40,7 @@ class SearchService < BaseService
     when :public
       statuses_index = statuses_index.filter.or(term: { visibility: 'public' })
     when :public_or_unlisted
-      statuses_index = statuses_index.filter.or(term: { visibility: ['public', 'unlisted'] })
+      statuses_index = statuses_index.filter.or(terms: { visibility: ['public', 'unlisted'] })
     end
     definition = parsed_query.apply(statuses_index)
 
