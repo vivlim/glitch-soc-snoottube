@@ -25,8 +25,9 @@ class Importer::StatusesIndexImporter < Importer::BaseImporter
           # on the results of the filter, so this filtering happens here instead
           bulk.map! do |entry|
             new_entry = begin
-              if entry[:index] && entry.dig(:index, :data, 'searchable_by').blank? &&
-                  Rails.configuration.x.search_scope == :classic
+              if entry[:index] &&
+                 entry.dig(:index, :data, 'searchable_by').blank? &&
+                 Rails.configuration.x.search_scope == :classic
                 { delete: entry[:index].except(:data) }
               else
                 entry
