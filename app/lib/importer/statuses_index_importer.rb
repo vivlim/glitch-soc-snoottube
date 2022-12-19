@@ -96,13 +96,11 @@ class Importer::StatusesIndexImporter < Importer::BaseImporter
     Status.local.select('"statuses"."id", COALESCE("statuses"."reblog_of_id", "statuses"."id") AS status_id')
   end
 
-  # The `id` field in the above queries isn't used anywhere, so we leave it out of these.
-
   def public_scope
-    Status.with_public_visibility.select('"statuses"."id" AS status_id')
+    Status.with_public_visibility.select('"statuses"."id", "statuses"."id" AS status_id')
   end
 
   def public_or_unlisted_scope
-    Status.with_public_or_unlisted_visibility.select('"statuses"."id" AS status_id')
+    Status.with_public_or_unlisted_visibility.select('"statuses"."id", "statuses"."id" AS status_id')
   end
 end
