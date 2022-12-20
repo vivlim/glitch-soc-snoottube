@@ -54,6 +54,8 @@ class ActivityPub::ProcessStatusUpdateService < BaseService
       broadcast_updates!
     end
 
+    StatusesIndex.import! @status
+
     forward_activity! if significant_changes? && @status_parser.edited_at > last_edit_date
   end
 
