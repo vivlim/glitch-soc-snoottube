@@ -35,6 +35,8 @@ class SearchQueryTransformer < Parslet::Transform
         { multi_match: { type: 'most_fields', query: clause.term, fields: ['text', 'text.stemmed'] } }
       when PhraseClause
         { match_phrase: { text: { query: clause.phrase } } }
+      when PrefixClause
+        { term: { clause.filter => clause.term } }
       else
         raise "Unexpected clause type: #{clause}"
       end
@@ -99,10 +101,21 @@ class SearchQueryTransformer < Parslet::Transform
   class PrefixClause
     attr_reader :filter, :operator, :term, :order
 
-    def initialize(prefix, term)
-      case prefix
-      when 'from'
+    def initialize(prefix, operator, term)
+      case operator
+      when '+', nil
         @operator = :filter
+      when '-'
+        @operator = :must_not
+      else
+        raise "Unknown operator: #{str}"
+      end
+
+      case prefix
+      when 'domain', 'is', 'has', 'lang'
+        @filter = prefix.to_s
+        @term = term
+      when 'from'
         @filter = :account_id
 
         username, domain = term.gsub(/\A@/, '').split('@')
@@ -111,6 +124,8 @@ class SearchQueryTransformer < Parslet::Transform
 
         @term = account.id
       when 'sort'
+        raise Mastodon::SyntaxError unless operator.nil?
+
         @operator = :order
         @term = :created_at
 
@@ -133,7 +148,7 @@ class SearchQueryTransformer < Parslet::Transform
     operator = clause[:operator]&.to_s
 
     if clause[:prefix]
-      PrefixClause.new(prefix, clause[:term].to_s)
+      PrefixClause.new(prefix, operator, clause[:term].to_s)
     elsif clause[:term]
       TermClause.new(prefix, operator, clause[:term].to_s)
     elsif clause[:shortcode]

@@ -173,6 +173,26 @@ class Status < ApplicationRecord
     ].compact.join("\n\n")
   end
 
+  def searchable_is
+    keywords = []
+    keywords << :bot if account.bot?
+    keywords << :local if local?
+    keywords << :local_only if local_only
+    keywords << :reply if reply?
+    keywords
+  end
+
+  def searchable_has
+    keywords = []
+    keywords << :cw if spoiler_text?
+    keywords << :link if FetchLinkCardService.new.link?(self)
+    keywords << :media if media_attachments.present?
+    keywords << :mention if mentions.present?
+    keywords << :poll if preloadable_poll.present?
+    keywords << :tag if tags.present?
+    keywords
+  end
+
   def to_log_human_identifier
     account.acct
   end
