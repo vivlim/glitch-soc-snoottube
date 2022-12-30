@@ -112,7 +112,7 @@ class SearchQueryTransformer < Parslet::Transform
       end
 
       case prefix
-      when 'domain', 'is', 'has', 'lang'
+      when 'domain', 'is', 'has', 'lang', 'visibility'
         @filter = prefix.to_s
         @term = term
       when 'from'

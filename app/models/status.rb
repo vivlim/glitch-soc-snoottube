@@ -179,6 +179,7 @@ class Status < ApplicationRecord
     keywords << :local if local?
     keywords << :local_only if local_only
     keywords << :reply if reply?
+    keywords << :sensitive if sensitive?
     keywords
   end
 
