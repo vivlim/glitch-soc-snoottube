@@ -45,7 +45,7 @@ class SearchQueryTransformer < Parslet::Transform
     def clause_to_filter(clause)
       case clause
       when PrefixClause
-        { term: { clause.filter => clause.term } }
+        { clause.query => { clause.filter => clause.term } }
       else
         raise "Unexpected clause type: #{clause}"
       end
@@ -99,9 +99,11 @@ class SearchQueryTransformer < Parslet::Transform
   end
 
   class PrefixClause
-    attr_reader :filter, :operator, :term, :order
+    attr_reader :filter, :operator, :term, :order, :query
 
     def initialize(prefix, operator, term)
+      @query = :term
+
       case operator
       when '+', nil
         @operator = :filter
@@ -115,6 +117,17 @@ class SearchQueryTransformer < Parslet::Transform
       when 'domain', 'is', 'has', 'lang', 'visibility'
         @filter = prefix.to_s
         @term = term
+      when 'before', 'after'
+        @query = :range
+        @filter = 'created_at'
+        case prefix
+        when 'before'
+          @term = { lt: term }
+        when 'after'
+          @term = { gt: term }
+        else
+          raise Mastodon::SyntaxError
+        end
       when 'from'
         @filter = :account_id
 
