@@ -42,7 +42,7 @@ class SearchService < BaseService
     when :public_or_unlisted
       statuses_index = statuses_index.filter.or(terms: { visibility: ['public', 'unlisted'] })
     end
-    definition = parsed_query.apply(statuses_index)
+    definition = parsed_query.apply(statuses_index, @account)
 
     if @options[:account_id].present?
       definition = definition.filter(term: { account_id: @options[:account_id] })
