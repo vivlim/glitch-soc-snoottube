@@ -13,11 +13,11 @@ class SearchQueryTransformer < Parslet::Transform
       @order_clauses = grouped.fetch(:order, [])
     end
 
-    def apply(search)
+    def apply(search, account)
       should_clauses.each { |clause| search = search.query.should(clause_to_query(clause)) }
       must_clauses.each { |clause| search = search.query.must(clause_to_query(clause)) }
       must_not_clauses.each { |clause| search = search.query.must_not(clause_to_query(clause)) }
-      filter_clauses.each { |clause| search = search.filter(**clause_to_filter(clause)) }
+      filter_clauses.each { |clause| search = search.filter(**clause_to_filter(clause, account)) }
       if order_clauses.empty?
         # Default to most recent results first.
         search = search.order(created_at: :desc)
@@ -42,10 +42,10 @@ class SearchQueryTransformer < Parslet::Transform
       end
     end
 
-    def clause_to_filter(clause)
+    def clause_to_filter(clause, account)
       case clause
       when PrefixClause
-        { clause.query => { clause.filter => clause.term } }
+        { clause.query => { clause.filter => clause.term == :account_id_placeholder ? account.id : clause.term } }
       else
         raise "Unexpected clause type: #{clause}"
       end
@@ -136,6 +136,11 @@ class SearchQueryTransformer < Parslet::Transform
         account          = Account.find_remote!(username, domain)
 
         @term = account.id
+      when 'scope'
+        raise Mastodon::SyntaxError unless operator.nil?
+        raise Mastodon::SyntaxError unless term == 'classic'
+        @filter = 'searchable_by'
+        @term = :account_id_placeholder
       when 'sort'
         raise Mastodon::SyntaxError unless operator.nil?
 
