@@ -47,7 +47,7 @@
 
     = stylesheet_link_tag '/expansion-paks/sleeping/sleeping.css', skip_pipeline: true, media: 'all', id: 'expansion-pak-sleeping-css'
 
-    %script {"type": "text/javascript", "src": "/expansion-paks/sleeping/sleeping.js"}
+    %script{"type": "text/javascript", "src": "/expansion-paks/sleeping/sleeping.js"}
 
   %body{ class: body_classes }
     = content_for?(:content) ? yield(:content) : yield
