@@ -37,6 +37,9 @@
 
     = custom_stylesheet
 
+    = stylesheet_link_tag '/sleeping/sleeping.css', skip_pipeline: true, media: 'all', id: 'expansion-pak-sleeping-css'
+    %script{"type": "text/javascript", "src": "/sleeping/sleeping.js"}
+
     = yield :header_tags
 
   %body{ class: body_classes }
