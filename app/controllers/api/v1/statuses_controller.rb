@@ -64,11 +64,18 @@ class Api::V1::StatusesController < Api::BaseController
       application: doorkeeper_token.application,
       poll: status_params[:poll],
       content_type: status_params[:content_type],
+      allowed_mentions: status_params[:allowed_mentions],
       idempotency: request.headers['Idempotency-Key'],
       with_rate_limit: true
     )
 
     render json: @status, serializer: @status.is_a?(ScheduledStatus) ? REST::ScheduledStatusSerializer : REST::StatusSerializer
+  rescue PostStatusService::UnexpectedMentionsError => e
+    unexpected_accounts = ActiveModel::Serializer::CollectionSerializer.new(
+      e.accounts,
+      serializer: REST::AccountSerializer
+    )
+    render json: { error: e.message, unexpected_accounts: unexpected_accounts }, status: 422
   end
 
   def update
@@ -80,6 +87,7 @@ class Api::V1::StatusesController < Api::BaseController
       current_account.id,
       text: status_params[:status],
       media_ids: status_params[:media_ids],
+      media_attributes: status_params[:media_attributes],
       sensitive: status_params[:sensitive],
       language: status_params[:language],
       spoiler_text: status_params[:spoiler_text],
@@ -130,7 +138,14 @@ class Api::V1::StatusesController < Api::BaseController
       :language,
       :scheduled_at,
       :content_type,
+      allowed_mentions: [],
       media_ids: [],
+      media_attributes: [
+        :id,
+        :thumbnail,
+        :description,
+        :focus,
+      ],
       poll: [
         :multiple,
         :hide_totals,

@@ -60,6 +60,7 @@
       width: 48px;
       height: 48px;
       @include avatar-size(48px);
+
       padding-top: 2px;
 
       img {
@@ -68,7 +69,8 @@
         display: block;
         margin: 0;
         border-radius: 4px;
-        @include avatar-radius();
+        @include avatar-radius;
+
         background: darken($ui-base-color, 8%);
         object-fit: cover;
       }
@@ -214,7 +216,7 @@
   font-size: 12px;
   line-height: 12px;
   font-weight: 500;
-  color: var(--user-role-accent, $ui-secondary-color);
+  color: $ui-secondary-color;
   background-color: var(--user-role-background, rgba($ui-secondary-color, 0.1));
   border: 1px solid var(--user-role-border, rgba($ui-secondary-color, 0.5));
 

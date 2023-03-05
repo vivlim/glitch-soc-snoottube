@@ -2,7 +2,7 @@
   font-size: inherit;
   vertical-align: middle;
   object-fit: contain;
-  margin: -.2ex .15em .2ex;
+  margin: -0.2ex 0.15em 0.2ex;
   width: 16px;
   height: 16px;
 
@@ -13,7 +13,7 @@
 
 .emoji-picker-dropdown__menu {
   background: $simple-background-color;
-  position: absolute;
+  position: relative;
   box-shadow: 4px 4px 6px rgba($base-shadow-color, 0.4);
   border-radius: 4px;
   margin-top: 5px;
