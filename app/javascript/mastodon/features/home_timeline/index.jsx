@@ -79,7 +79,7 @@ const mapStateToProps = state => ({
   hasAnnouncements: !state.getIn(['announcements', 'items']).isEmpty(),
   unreadAnnouncements: state.getIn(['announcements', 'items']).count(item => !item.get('read')),
   showAnnouncements: state.getIn(['announcements', 'show']),
-  tooSlow: homeTooSlow(state),
+  tooSlow: false,//homeTooSlow(state),
 });
 
 class HomeTimeline extends PureComponent {
