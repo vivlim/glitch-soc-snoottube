@@ -21,11 +21,11 @@ module Mastodon
     end
 
     def prerelease
-      ENV['MASTODON_VERSION_PRERELEASE'].presence || default_prerelease
+      default_prerelease
     end
 
     def build_metadata
-      ['glitch-snoot', ENV.fetch('MASTODON_VERSION_METADATA', nil)].compact_blank.join('.')
+      'glitch'
     end
 
     def to_a
@@ -34,8 +34,8 @@ module Mastodon
 
     def to_s
       components = [to_a.join('.')]
-      components << "-#{prerelease}" if prerelease.present?
-      components << "+#{build_metadata}" if build_metadata.present?
+      components << "-#{prerelease}"
+      components << "+#{build_metadata}"
       components.join
     end
 
